@@ -1,0 +1,18 @@
+
+<h1>Dashboard</h1>
+
+<div class="row">
+
+  <div class="col-xs-12 col-sm-6">
+    <%= image_tag 'map.png', class: 'img-responsive' %>
+    <p>This map would show the real-time position of each bus in the fleet</p>
+  </div>
+
+  <div class="col-xs-12 col-sm-6">
+    <h2>Alerts</h2>
+    <p>This would show a list of current alerts such as a driver behaving erratically.</p>
+    <h2>Current routes</h2>
+    <%= render "routes/current_routes" %>
+  </div>
+
+</div>

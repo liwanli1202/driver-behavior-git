@@ -1,0 +1,1 @@
+rake vehicle_connector:start

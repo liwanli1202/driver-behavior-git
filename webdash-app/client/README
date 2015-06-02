@@ -1,0 +1,43 @@
+
+Client for webdash web socket server. Reads from stdin and passes the data
+to the server.
+
+Requires an X509 client authentication for each client.
+
+Steps to generate:
+
+1. Generate the key and create the CSR with
+
+   openssl req -nodes -newkey rsa:4096 -keyout webdash-client-X.key -out webdash-client-X.csr
+
+   Fill out the two fields Common Name and Email Address (although that might
+   be unnecessary?) and leave all other blank. After that the private key is
+   in file webdash-client-X.key (note: not protected by a passphrase, which is
+   appropriate for us), and the key signing request including the public part
+   in webdash-client-X.csr.
+
+2. Get a certificate for the key from CAcert.org 
+
+   Log into the CAcert.org website and use the menu client certificate | New.
+   Check Show advanced options: to show the input field Optional Client CSR.
+   Paste the complete contents of the file webdash-client-X.csr into the
+   Optional Client CSR area. Then check the other options and finally click
+   on Generate Certificate.
+
+   Choose options (not sure whether "Enable certificate login with this
+   certificate" is respected by the server, or something else must be done
+   to prevent creation of a certificate which allows login to CAcert.org).
+   Click on Generate Certificate. Save the resulting certificate to
+   webdash-client-X.crt.
+
+3. Install in webdsah
+
+   The .csr file can now be deleted.  Place the .key and .crt files in
+   the webdash client directory, and place the .crt file in the
+   valid-client-certs directory for the websocket server.
+
+4. Run with the new certificate
+
+   webdash-client.rb wss:://<ip address or host>:8126 webdash-client-X.key webdash-client-X.crt
+
+

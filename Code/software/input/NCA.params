@@ -1,0 +1,23 @@
+%YAML:1.0
+hasProjectionMatrixParams: 1
+ProjectionMatrix: !!opencv-matrix
+   rows: 3
+   cols: 4
+   dt: d
+   data: [2024.4, 884.86, -21.311, 18.602, 78.895, 355.62, -2029.7, 1771.6 ,0.038010, 0.99522, -0.089955, 0.078520]
+estimatedRoll: 1.879187 
+estimatedPitch: 5.161014
+estimatedYaw: 2.187202
+ignorePixelsLeft: 350
+ignorePixelsRight: 350
+ignorePixelsBottom: 380
+ignorePixelsTop: 0
+iCameraWidth: 1920
+iCameraHeight: 1080
+expectedLaneWidth: 2.25
+hasMaskMatrixParams: 1
+MaskMatrix: !!opencv-matrix
+   rows: 1
+   cols: 8
+   dt: i
+   data: [0, 0, 0, 450, 1920, 450, 1920, 0]

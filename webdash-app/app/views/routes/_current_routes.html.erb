@@ -1,0 +1,6 @@
+
+<ul>
+  <% VehicleRoute.all.each do |vr| %>
+    <li><%= link_to vr.name, vr %></li>
+  <% end %>
+</ul>

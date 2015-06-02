@@ -1,0 +1,22 @@
+make -f Makefile-DriverAwarenessTest
+#
+# == Camera ==
+#
+#echo "Using Camera"
+#
+#./ClassTest -c1 iqeye -n1 1 -w1 800 -h1 600 -p1 "http://192.41.171.232/now.jpg?snap=spush&pragma=motion&stream=1" -process -dispimgcapture -savevideo -fps 2
+#
+# == Emulator ==
+#
+echo "Using emulator"
+./DriverAwarenessTest -c1 emulator -n1 1 -w1 640 -h1 480 -cm1 1 -p1 "../../videos/gError02a.mp4" -fps 20 -process  -numframestoskip 0 -savevideo -paramsfile "../input/NCA.params" -dispGraph -enableMask
+#
+# Options
+# 
+# -p1 "../../videos/Hua-Hin_01.avi" 
+# -fps 100 
+# -process
+# -dispimgcapture 
+# -c "../../videos/Hua-Hin_01.config" -setregionsfromconfigfile
+# -num_frames_to_skip 0
+# -savevideo 

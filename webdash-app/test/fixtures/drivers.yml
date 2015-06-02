@@ -1,0 +1,10 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id: 1
+  lane_change_frequency: 0
+
+
+#two:
+ 
+# lane_change_frequency: 1

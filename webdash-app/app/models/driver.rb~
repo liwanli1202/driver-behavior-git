@@ -1,0 +1,76 @@
+class Driver < ActiveRecord::Base
+
+  @time_stamp_array = Array.new
+  @lat_dis_array = Array.new
+  @lane_change_array = Array.new
+
+  def getArrays( array01, array02, array03 )
+    @time_stamp_array = array01.clone
+    @lat_dis_array = array02.clone
+    @lane_change_array = array03.clone
+    
+  end
+  
+  #find the most recent lane change speed
+  def findRecentLaneChangeSpeed(previous_lane_change_speed)
+    @most_recent_lane_change_speed = previous_lane_change_speed
+    @lane_change_array.each do |element|
+      if element.to_i != 0
+        @most_recent_lane_change_speed =  element.to_i;
+      end
+    end
+    return @most_recent_lane_change_speed.to_i 
+  end
+
+  def findTotalTimeDriven(last_updated_total_time_driven)
+    return last_updated_total_time_driven.to_i + ( @time_stamp_array.last - @time_stamp_array.first )
+  end  
+
+  #returns the number of total lane changes of the driver.
+  def findNumberOfLaneChanges(number_of_previous_lane_changes)
+    @number_of_lane_changes = 0
+    @lane_change_array.each do |element|
+      if element.to_i != 0
+        @number_of_lane_changes = @number_of_lane_changes + 1; 
+      end
+    end
+   
+    return @number_of_lane_changes.to_i + number_of_previous_lane_changes.to_i
+  end
+
+  def findLaneChangeFrequency(number_of_lane_changes, time_driven )
+    return ((number_of_lane_changes.to_f * 1000 * 60) / time_driven.to_f).to_f
+  end
+  
+  #finds the sum of all lane change speeds. This is used to calculate the average lane change
+  #speed later. 
+  def findSumOfLaneChangeSpeeds(previous_sum_of_lane_change_speeds)
+    @most_recent_lane_change_speed = 0
+    @lane_change_array.each do |element|
+      if element.to_i != 0
+        @most_recent_lane_change_speed = @most_recent_lane_change_speed + element.to_i;
+      end
+    end
+    return @most_recent_lane_change_speed.to_i + previous_sum_of_lane_change_speeds
+  end
+
+  #finds the average lane change Speed
+  def findAverageLaneChangeSpeed(lane_change_speed_sum, number_of_lane_changes)
+    return (lane_change_speed_sum.to_f / number_of_lane_changes.to_f).to_f
+  end
+
+
+  #finds the stability
+  def findStability
+    @mean =  @lat_dis_array.sum.to_f / @lat_dis_array.size.to_f
+    @temp = 0 
+    @lat_dis_array.each do |element|
+      @temp = @temp.to_f + ((@mean.to_f - element.to_f) * (@mean.to_f - element.to_f))
+    end
+
+    return @temp.to_f / @lat_dis_array.size.to_f
+
+  end
+  
+  
+end

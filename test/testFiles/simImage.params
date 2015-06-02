@@ -1,0 +1,12 @@
+%YAML:1.0
+hasProjectionMatrixParams: 1
+ProjectionMatrix: !!opencv-matrix
+   rows: 3
+   cols: 4
+   dt: d
+   data: [ 768.440000, 304.250000, -154.730000, 258.340000, -59.223000, -11.659000, -811.570000, 1355.000000, -0.022755, 0.951400, -0.307110, 0.512750 ]
+distLeftGroundTruth: 1.2222
+distRightGroundTruth: 1.015
+iCameraWidth: 640
+iCameraHeight: 480
+expectedLaneWidth: 2.25

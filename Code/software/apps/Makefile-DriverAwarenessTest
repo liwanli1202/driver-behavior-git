@@ -1,0 +1,49 @@
+# the program to build
+NAME		:= DriverAwarenessTest
+
+# Build tools and flags
+CXX			:= /usr/bin/g++
+LD			:= /usr/bin/g++
+CPPFLAGS	:= -I /usr/local/include \
+				-I /usr/local/include/opencv \
+				-I ../lib/ \
+				-I ./
+
+CXXFLAGS	:= -g -O3 #e.g., CXXFLAGS=-g -O0 for debugging
+
+# To keep the makefile for 32 and 64 in sync we add 64 and 32-bit library paths
+# If you are targeting only 32 bit for you can remove the entries containing "64"
+LDFLAGS		:= -L/usr/local/lib \
+				-L/usr/lib \
+				-L ../lib/ \
+				-L. \
+				-Wl,-E
+
+LIBS		:= -lopencv_core -lopencv_highgui -lopencv_video -lopencv_imgproc \
+				-lopencv_ml -lopencv_flann -lopencv_objdetect -lopencv_features2d\
+				-lvlccore -lvlc -lopencv_nonfree -lopencv_legacy -lopencv_calib3d\
+				-lboost_thread -lboost_system -ltbb 
+
+all		    : $(NAME)
+
+$(NAME)		: 	$(NAME).o \
+				../lib/Timer.o ../lib/ErrorHandler.o ../lib/Clock.o \
+				../lib/Utilities.o ../lib/Logger.o \
+				../lib/Camera.o ../lib/CameraAccessor.o \
+				../lib/IQEyeVideoStreamer.o ../lib/CameraIQEye.o \
+				../lib/CameraEmulator.o ../lib/CameraUSB.o \
+				../lib/Region.o ../lib/Regions.o \
+				DriverAwareness.o LaneMarkingDetector.o CameraGeometry.o\
+				Line.o Lane.o Util.o DriverBehaviorAnalysis.o \
+				ConnectedComponentDetector.o Convolution.o \
+				RANSACEstimator.o LaneMarkingFilter.o
+	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
+	
+%.o 		: %.cpp CameraCaptureConfig.h \
+				CameraIQEyeConfig.h CameraEmulatorConfig.h CameraUSBConfig.h \
+				DriverAwarenessConfig.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
+
+clean		:
+	$(RM) *.o $(NAME) ../lib/*.o *.gcda *.gcno *.d ../lib/*.gcda ../lib.*gcno ../lib/*.d
+

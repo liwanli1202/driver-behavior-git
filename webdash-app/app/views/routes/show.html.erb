@@ -1,0 +1,30 @@
+<h1>Route Status</h1>
+
+<p>
+  <b>Route:</b> <%= @route.name %> <b>Vehicle ID:</b> <%= @vehicle.vehicle_id %> <b>Start time:</b> <%= @vehicle_route.start_time %>
+  <b>Finish time:</b> <%= @vehicle_route.finish_time %>
+</p>
+
+<div class="row">
+
+  <div class="col-xs-12 col-sm-6">
+    <%= image_tag 'map.png', class: 'img-responsive' %>
+    <p>This map would show the route of this bus and its current position</p>
+  </div>
+
+  <div class="col-xs-12 col-sm-6">
+    <h2>Driver stats</h2>
+    <div class="demo-container">
+      <div id="barholder" class="demo-placeholder"></div>
+    </div>
+    This shows statistics for this driver, updated in real time
+  </div>
+
+</div>
+
+<div class="row">
+  <h2>Vehicle position</h2>
+  <div class="demo-container">
+    <div id="placeholder" class="demo-placeholder"></div>
+  </div>
+</div>
