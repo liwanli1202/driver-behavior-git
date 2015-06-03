@@ -667,7 +667,7 @@ void DriverAwareness::processFrame(const IplImage *pImageC, long long timestamp,
 	
 
 
-
+	//cvWaitKey(0);
 
 	/* end */
 

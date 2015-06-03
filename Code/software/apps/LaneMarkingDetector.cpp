@@ -263,20 +263,28 @@ void LaneMarkingDetector::GetCartesianProduct(vector<MarkingComponent> &leftComp
 					      vector<MarkingComponent> &rightComponents,
 					      vector< vector < vector<MarkingComponent> > > &cartesianProduct)
 {
+
         for (unsigned int i = 0; i < leftComponents[i].size(); i++)
 	{
-	        for (unsigned int j = 0; j < rightComponents[i].size(); j++)
+
+		cout << "Left =  " << leftComponents.size() << endl;
+	
+		cout <<  "Right = " << rightComponents.size() << endl;
+/*	
+	        for (unsigned int j = 0; j < rightComponents[j].size(); j++)
 		{
 			
 		//	std::vector< vector<MarkingComponent> >  vec; 
 		//	vec.push_back(leftComponents[i][j]);
 		//	vec.push_back(rightComponents[i][j]);
-			cout << leftComponents[i][j].groundPoint.x << endl;	
+			cout << "I = " << i << " J = " << j << endl;
 			//cartesianProduct.push_back(vec);
 
 		
 		}
+*/
 	}
+
 }
 
 
@@ -289,6 +297,12 @@ void LaneMarkingDetector::FindLeftAndRightCandidates(cv::Mat &img,
     cv::Point2f min_point, max_point;
     Util util;
 
+    std::vector<MarkingPoint> mcr;
+
+    std::vector<MarkingPoint> mcl;
+		
+    int i = 0; 
+    i++; 
     for (unsigned int i = 0; i < components.size(); i++)
     {
 	for(unsigned int j=0; j< components[i].size(); j++)
@@ -299,9 +313,11 @@ void LaneMarkingDetector::FindLeftAndRightCandidates(cv::Mat &img,
                                                                     components[i]);
         	boost::tie(min_point, max_point) = extreme_points;
 
-		std::vector<MarkingPoint> mcr;
+//		std::vector<MarkingPoint> mcr;
 
-		std::vector<MarkingPoint> mcl;
+//		std::vector<MarkingPoint> mcl;
+		mcr.clear();
+		mcl.clear();
 
 		if (components[i][j].groundPoint.x > 0.5)
 		{
@@ -315,8 +331,6 @@ void LaneMarkingDetector::FindLeftAndRightCandidates(cv::Mat &img,
 			mp.groundPoint = components[i][j].groundPoint; 
 			mcr.push_back(mp);
 			rightComponents.push_back(mcr);
-			cout << "#####################################################" << endl; 
-			cout << rightComponents.size() << endl; 
 
 		}
 		else
@@ -329,14 +343,24 @@ void LaneMarkingDetector::FindLeftAndRightCandidates(cv::Mat &img,
 			mp.imagePoint  = components[i][j].imagePoint;
                         mp.groundPoint = components[i][j].groundPoint;
                         mcl.push_back(mp);
-
-
 			leftComponents.push_back(mcl); 
 		}
 	}
     }
 
 
+    cout << "I= "<< i << endl; 
+    //adding the empty 	
+    mcl.clear();
+    mcr.clear(); 
+    MarkingPoint empty; 
+
+    mcl.push_back(empty);
+    mcr.push_back(empty); 
+
+    leftComponents.push_back(mcl);
+    rightComponents.push_back(mcr); 			
+    			
 
 }
 
@@ -465,18 +489,15 @@ void LaneMarkingDetector::findLaneBoundaries(const IplImage *pImageOriginal,
                 CV_8UC3);
         //drawComponentsImage(matInlierComps, markingComponents);
 	FindLeftAndRightCandidates(matInlierComps, markingComponents, leftComponents, rightComponents);
-	
 
-	cout << "lakfjlkafjlkasdjflkajflkasdjflkasdjfklasdjflkasdjfklasdjfklasjdflkasdjfklads" << endl;
-	cout << rightComponents.size() << endl; 
 
         std::vector< vector < vector<MarkingComponent> > >  cartesianProduct;
 
 	GetCartesianProduct(leftComponents, rightComponents, cartesianProduct); 
 
-        cout << "///////////////////////////////////////////////////////////////////////// " << endl;
+	cvWaitKey(0);
 
-	cout << cartesianProduct.size() << endl; 	
+
 	
         cv::imshow("Inlier components", matInlierComps);
 
