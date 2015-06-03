@@ -302,54 +302,47 @@ void LaneMarkingDetector::FindLeftAndRightCandidates(cv::Mat &img,
     std::vector<MarkingPoint> mcl;
 		
     int i = 0; 
-    i++; 
+    i++;
+    
+    int left =0;
+    int right = 0; 	
+ 
     for (unsigned int i = 0; i < components.size(); i++)
     {
-	for(unsigned int j=0; j< components[i].size(); j++)
+        //draw the line in the image
+	fitImageLine(line, components[i]);
+        Line::ExtremePointsF extreme_points = getExtremePointsImage(line, components[i]);
+        boost::tie(min_point, max_point) = extreme_points;
+
+	MarkingPoint maxPoint;
+        maxPoint.imagePoint = max_point;
+        _pUtil->imagePlaneToGroundPlane(maxPoint.imagePoint, maxPoint.groundPoint, _pMatHinv);
+
+	MarkingPoint minPoint;
+        minPoint.imagePoint = min_point;
+        _pUtil->imagePlaneToGroundPlane(minPoint.imagePoint, minPoint.groundPoint, _pMatHinv);
+
+	mcr.clear();
+        mcl.clear();
+
+
+
+	if(minPoint.groundPoint.x > 0.5 && maxPoint.groundPoint.x >0.5)
 	{
-
-        	fitImageLine(line, components[i]);
-        	Line::ExtremePointsF extreme_points = getExtremePointsImage(line,
-                                                                    components[i]);
-        	boost::tie(min_point, max_point) = extreme_points;
-
-//		std::vector<MarkingPoint> mcr;
-
-//		std::vector<MarkingPoint> mcl;
-		mcr.clear();
-		mcl.clear();
-
-		if (components[i][j].groundPoint.x > 0.5)
-		{
-          		cv::line(img,
-		   		util.RoundPoint(min_point),
-		   		util.RoundPoint(max_point),
-		   		cv::Scalar(0, 0, 255), 2, CV_AA, 0);
-	
-			MarkingPoint mp; 
-			mp.imagePoint  = components[i][j].imagePoint;
-			mp.groundPoint = components[i][j].groundPoint; 
-			mcr.push_back(mp);
-			rightComponents.push_back(mcr);
-
-		}
-		else
-		{
-	   		cv::line(img,
-		    		util.RoundPoint(min_point),
-                    		util.RoundPoint(max_point),
-                    		cv::Scalar(255, 0, 0), 2, CV_AA, 0);
-			MarkingPoint mp; 
-			mp.imagePoint  = components[i][j].imagePoint;
-                        mp.groundPoint = components[i][j].groundPoint;
-                        mcl.push_back(mp);
-			leftComponents.push_back(mcl); 
-		}
+                rightComponents.push_back(components[i]);
+        	cv::line(img, util.RoundPoint(min_point), util.RoundPoint(max_point), cv::Scalar(0, 0, 255), 0.5, CV_AA, 0);
+		right++;
 	}
+	else
+	{
+                leftComponents.push_back(components[i]);
+		cv::line(img, util.RoundPoint(min_point), util.RoundPoint(max_point), cv::Scalar(255, 0, 0), 2, CV_AA, 0);
+		left++;
+	}
+	
+
     }
 
-
-    cout << "I= "<< i << endl; 
     //adding the empty 	
     mcl.clear();
     mcr.clear(); 
@@ -357,11 +350,15 @@ void LaneMarkingDetector::FindLeftAndRightCandidates(cv::Mat &img,
 
     mcl.push_back(empty);
     mcr.push_back(empty); 
+	
+    right++; 
+    left++;		
 
     leftComponents.push_back(mcl);
     rightComponents.push_back(mcr); 			
     			
-
+    cout << "LEFT= " << left << endl; 
+    cout << "RIGHT= "<< right << endl;	
 }
 
 
