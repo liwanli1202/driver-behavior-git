@@ -262,28 +262,31 @@ void LaneMarkingDetector::drawComponentsImage(cv::Mat &img,
 
 void LaneMarkingDetector::GetCartesianProduct(vector<MarkingComponent> &leftComponents,
 					      vector<MarkingComponent> &rightComponents,
-					      vector< vector < vector<MarkingComponent> > > &cartesianProduct)
+                                              MarkingComponents &leftComp,
+					      MarkingComponents &rightComp,
+					      vector< vector < vector<MarkingComponent> > > &cartesianProduct
+						)
 {
 
-        for (unsigned int i = 0; i < leftComponents[i].size(); i++)
+
+
+	int k = 0; 
+	int j = 0; 
+        for (unsigned int i = 0; i < leftComp.components.size(); i++)
 	{
 
-//		cout << "Left =  " << leftComponents.size() << endl;
+		k++; 
+		cout << "size of the left components:  " << k << endl;
 	
-//		cout <<  "Right = " << rightComponents.size() << endl;
-/*	
-	        for (unsigned int j = 0; j < rightComponents[j].size(); j++)
+	
+	        for (unsigned int j = 0; j < rightComp.components.size(); j++)
 		{
 			
-		//	std::vector< vector<MarkingComponent> >  vec; 
-		//	vec.push_back(leftComponents[i][j]);
-		//	vec.push_back(rightComponents[i][j]);
-			cout << "I = " << i << " J = " << j << endl;
-			//cartesianProduct.push_back(vec);
-
+			j++; 
+			cout << "size of the right components: "<< j << endl; 
 		
 		}
-*/
+
 	}
 
 }
@@ -292,14 +295,16 @@ void LaneMarkingDetector::GetCartesianProduct(vector<MarkingComponent> &leftComp
 void LaneMarkingDetector::FindLeftAndRightCandidates(cv::Mat &img,
          const vector<MarkingComponent> &components,
 	 vector<MarkingComponent> &leftComponents,
-	 vector<MarkingComponent> &rightComponents 
+	 vector<MarkingComponent> &rightComponents, 
+	 MarkingComponents &leftComp, 
+	 MarkingComponents &rightComp 
          )
 {
     Line line;
     cv::Point2f min_point, max_point;
     Util util;
-    MarkingComponents rightComp; 
-    MarkingComponents leftComp; 
+    //MarkingComponents rightComp; 
+    //MarkingComponents leftComp; 
 		
     
     int left =0;
@@ -500,13 +505,17 @@ void LaneMarkingDetector::findLaneBoundaries(const IplImage *pImageOriginal,
                 CV_8UC3);
         //drawComponentsImage(matInlierComps, markingComponents);
 
-	cvWaitKey(0); 
-	FindLeftAndRightCandidates(matInlierComps, markingComponents, leftComponents, rightComponents);
+	cvWaitKey(0);
+	
+	MarkingComponents leftComp; 
+        MarkingComponents rightComp; 
+ 
+	FindLeftAndRightCandidates(matInlierComps, markingComponents, leftComponents, rightComponents, leftComp, rightComp);
 
 
         std::vector< vector < vector<MarkingComponent> > >  cartesianProduct;
 
-	GetCartesianProduct(leftComponents, rightComponents, cartesianProduct); 
+	GetCartesianProduct(leftComponents, rightComponents, leftComp, rightComp, cartesianProduct); 
 
 	//cvWaitKey(0);
 

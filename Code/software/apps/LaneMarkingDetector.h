@@ -137,12 +137,17 @@ private:
                         cv::Mat &img,
                         const vector<MarkingComponent> &components,
                         vector<MarkingComponent> &leftComponents,
-                        vector<MarkingComponent> &rightComponents
+                        vector<MarkingComponent> &rightComponents,
+			MarkingComponents &leftComp,	
+			MarkingComponents &rightComp 
                         );
 
 	void GetCartesianProduct(vector<MarkingComponent> &leftComponents,
                                                       vector<MarkingComponent> &rightComponents,
-                                                      vector< vector <vector<MarkingComponent> > > &cartesianProduct);
+                                                      MarkingComponents &leftComp,	
+						      MarkingComponents &rightComp,
+						      vector< vector <vector<MarkingComponent> > > &cartesianProduct
+			   			      );
 	
 
 	void removeInconsistentGroundPlaneComponents(
