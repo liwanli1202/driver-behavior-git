@@ -350,8 +350,8 @@ void LaneMarkingDetector::FindLeftAndRightCandidates(cv::Mat &img,
     leftComponents.push_back(mcl);
     rightComponents.push_back(mcr); 			
     			
-    cout << "LEFT= " << left << endl; 
-    cout << "RIGHT= "<< right << endl;	
+    cout << "NO OF LEFT COMPONENTS= " << left << endl; 
+    cout << "NO OF RIGHT COMPONENTS= "<< right << endl;	
 }
 
 
