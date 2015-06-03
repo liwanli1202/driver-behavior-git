@@ -267,9 +267,9 @@ void LaneMarkingDetector::GetCartesianProduct(vector<MarkingComponent> &leftComp
         for (unsigned int i = 0; i < leftComponents[i].size(); i++)
 	{
 
-		cout << "Left =  " << leftComponents.size() << endl;
+//		cout << "Left =  " << leftComponents.size() << endl;
 	
-		cout <<  "Right = " << rightComponents.size() << endl;
+//		cout <<  "Right = " << rightComponents.size() << endl;
 /*	
 	        for (unsigned int j = 0; j < rightComponents[j].size(); j++)
 		{
@@ -297,12 +297,7 @@ void LaneMarkingDetector::FindLeftAndRightCandidates(cv::Mat &img,
     cv::Point2f min_point, max_point;
     Util util;
 
-    std::vector<MarkingPoint> mcr;
-
-    std::vector<MarkingPoint> mcl;
 		
-    int i = 0; 
-    i++;
     
     int left =0;
     int right = 0; 	
@@ -322,11 +317,6 @@ void LaneMarkingDetector::FindLeftAndRightCandidates(cv::Mat &img,
         minPoint.imagePoint = min_point;
         _pUtil->imagePlaneToGroundPlane(minPoint.imagePoint, minPoint.groundPoint, _pMatHinv);
 
-	mcr.clear();
-        mcl.clear();
-
-
-
 	if(minPoint.groundPoint.x > 0.5 && maxPoint.groundPoint.x >0.5)
 	{
                 rightComponents.push_back(components[i]);
@@ -339,10 +329,13 @@ void LaneMarkingDetector::FindLeftAndRightCandidates(cv::Mat &img,
 		cv::line(img, util.RoundPoint(min_point), util.RoundPoint(max_point), cv::Scalar(255, 0, 0), 2, CV_AA, 0);
 		left++;
 	}
-	
 
     }
 
+    std::vector<MarkingPoint> mcr;
+
+    std::vector<MarkingPoint> mcl;
+	
     //adding the empty 	
     mcl.clear();
     mcr.clear(); 
@@ -485,6 +478,8 @@ void LaneMarkingDetector::findLaneBoundaries(const IplImage *pImageOriginal,
         cv::Mat matInlierComps = cv::Mat::zeros(pImageC->height, pImageC->width,
                 CV_8UC3);
         //drawComponentsImage(matInlierComps, markingComponents);
+
+	cvWaitKey(0); 
 	FindLeftAndRightCandidates(matInlierComps, markingComponents, leftComponents, rightComponents);
 
 
@@ -492,7 +487,7 @@ void LaneMarkingDetector::findLaneBoundaries(const IplImage *pImageOriginal,
 
 	GetCartesianProduct(leftComponents, rightComponents, cartesianProduct); 
 
-	cvWaitKey(0);
+	//cvWaitKey(0);
 
 
 	
