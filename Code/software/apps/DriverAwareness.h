@@ -6,6 +6,7 @@
  *
  */
 
+//some 
 #ifndef CLASS_H_
 #define CLASS_H_
 
@@ -52,7 +53,7 @@ public:
 
     void startApp(bool bDebug = false);
     bool setFrameForInit(IplImage *pImageGrabbed);
-    void processFrame(const IplImage *pImageC, long long timeStamp, bool bDebug = false);
+    void processFrame(const IplImage *pImageC, long long timeStamp, bool bDebug, int leftId , int rightId   );
 
     void createVideoFile(int iVideoFileNo, IplImage *pImage);
     void saveFrameToVideo(IplImage *pImage, int iFrameNo);

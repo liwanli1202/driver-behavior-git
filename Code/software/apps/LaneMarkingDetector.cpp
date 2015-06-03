@@ -20,7 +20,8 @@
 #define LANE_MARKING_WIDTH_WORLD 0.10
 #define MIN_LANE_MARKING_WIDTH_IN_PIXEL 0
 
-
+int leftId; 
+int rightId;
 
 
 
@@ -291,12 +292,14 @@ void LaneMarkingDetector::GetCartesianProduct(vector<MarkingComponent> &leftComp
 void LaneMarkingDetector::FindLeftAndRightCandidates(cv::Mat &img,
          const vector<MarkingComponent> &components,
 	 vector<MarkingComponent> &leftComponents,
-	 vector<MarkingComponent> &rightComponents )
+	 vector<MarkingComponent> &rightComponents 
+         )
 {
     Line line;
     cv::Point2f min_point, max_point;
     Util util;
-
+    MarkingComponents rightComp; 
+    MarkingComponents leftComp; 
 		
     
     int left =0;
@@ -320,14 +323,21 @@ void LaneMarkingDetector::FindLeftAndRightCandidates(cv::Mat &img,
 	if(minPoint.groundPoint.x > 0.5 && maxPoint.groundPoint.x >0.5)
 	{
                 rightComponents.push_back(components[i]);
+		rightId++;
+		rightComp.components = rightComponents; 
+                rightComp.id = rightId; 
         	cv::line(img, util.RoundPoint(min_point), util.RoundPoint(max_point), cv::Scalar(0, 0, 255), 0.5, CV_AA, 0);
 		right++;
 	}
 	else
 	{
                 leftComponents.push_back(components[i]);
+	        leftId++; 	
+		leftComp.components = leftComponents;
+		leftComp.id = leftId; 
 		cv::line(img, util.RoundPoint(min_point), util.RoundPoint(max_point), cv::Scalar(255, 0, 0), 2, CV_AA, 0);
 		left++;
+
 	}
 
     }
@@ -349,9 +359,20 @@ void LaneMarkingDetector::FindLeftAndRightCandidates(cv::Mat &img,
 
     leftComponents.push_back(mcl);
     rightComponents.push_back(mcr); 			
-    			
+    		
+    leftId++; 	
+    leftComp.components = leftComponents;
+    leftComp.id = leftId; 
+
+    rightId++;
+    rightComp.components = rightComponents; 
+    rightComp.id = rightId; 
+
     cout << "NO OF LEFT COMPONENTS= " << left << endl; 
-    cout << "NO OF RIGHT COMPONENTS= "<< right << endl;	
+    cout << "NO OF RIGHT COMPONENTS= "<< right << endl;
+    cout << "Left Component Id= "<< leftComp.id << endl;		
+    cout << "Right Component Id= "<< rightComp.id << endl;		
+
 }
 
 
@@ -380,7 +401,7 @@ void LaneMarkingDetector::drawComponentsGround(cv::Mat &ground_img,
 
 void LaneMarkingDetector::findLaneBoundaries(const IplImage *pImageOriginal,
         IplImage *pImageC, Boundary &leftBoundary, Boundary &rightBoundary,
-        bool bDisableDispWindows, bool bDebug)
+        bool bDisableDispWindows, bool bDebug, int leftId, int rightId)
 {
 
     timeval startTime = _pTimer->getCurrentTime();

@@ -68,6 +68,11 @@ bool DriverAwareness::_bProcessFrames = false;
 // Mask
 bool DriverAwareness::_bEnableMask = false;
 
+//Global parameters for left and right lane marking component management; 
+int const leftId = 0; 
+int const rightId = 0; 
+
+
 void DriverAwareness::initErrorDiagnosticsList()
 {
     if (!DriverAwareness::_bIsSetErrorDiagnosticsList)
@@ -453,7 +458,7 @@ void DriverAwareness::startApp(bool bDebug)
         }
         if (_bProcessFrames)
         {
-            processFrame(pImageGrabbed, _timestamp, bDebug);
+            processFrame(pImageGrabbed, _timestamp, bDebug, leftId, rightId);
         }
 
         _prevFrameTimestampInMilliSec = _currentFrameTimestampInMilliSec;
@@ -509,7 +514,7 @@ bool DriverAwareness::setFrameForInit(IplImage *pImageGrabbed)
     return bIsSetFrameForInit;
 }
 
-void DriverAwareness::processFrame(const IplImage *pImageC, long long timestamp, bool bDebug)
+void DriverAwareness::processFrame(const IplImage *pImageC, long long timestamp, bool bDebug, int leftId, int rightId)
 {
 	if(!_bDisableDispWindows)
 	{
@@ -543,7 +548,7 @@ void DriverAwareness::processFrame(const IplImage *pImageC, long long timestamp,
 	timeval startTime = _pTimer->getCurrentTime();
 	LaneMarkingDetector::Boundary boundaryLeft, boundaryRight;
 	_pLaneMarkingDetector->findLaneBoundaries( pImageC, _pImageProcessGray,
-			boundaryLeft, boundaryRight, _bDisableDispWindows, bDebug);
+			boundaryLeft, boundaryRight, _bDisableDispWindows, bDebug, leftId, rightId);
 	_pLaneMarkingFilter->updateState(boundaryLeft, boundaryRight, pImageC, _bDisableDispWindows, false);
 	double dPosition, dYaw;
         _pLaneMarkingFilter->getCurrentState(dPosition, dYaw);

@@ -54,6 +54,14 @@ public:
 	};
 	typedef std::vector<MarkingPoint> MarkingComponent;
 
+	class MarkingComponents{
+	public:
+	        std::vector<MarkingComponent> components;
+		int id;	
+
+	};
+
+
 	void initializeCameraModel(
 			float focalLengthX, float focalLengthY, float px, float py,
 			int width, int height,
@@ -69,7 +77,7 @@ public:
 	void findLaneBoundaries(
 			const IplImage *pImageOriginal, IplImage *pImageC,
 			Boundary &leftBoundary, Boundary &rightBoundary,
-			bool bDisableDispWindows, bool bDebug);
+			bool bDisableDispWindows, bool bDebug, int leftId, int rightId);
 
 	void findBestBoundaries(
 			std::vector< std::vector<MarkingComponent> > &groupedMarkingComponents,
@@ -129,7 +137,8 @@ private:
                         cv::Mat &img,
                         const vector<MarkingComponent> &components,
                         vector<MarkingComponent> &leftComponents,
-                        vector<MarkingComponent> &rightComponents);
+                        vector<MarkingComponent> &rightComponents
+                        );
 
 	void GetCartesianProduct(vector<MarkingComponent> &leftComponents,
                                                       vector<MarkingComponent> &rightComponents,
